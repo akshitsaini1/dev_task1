@@ -1,0 +1,30 @@
+ls
+if [ -a /devops ]
+then
+	if [ -a /devops/dev ]
+    then
+    	echo "/devops/dev dir already existes now moving file to dev env"
+    	sudo mv * /devops/dev
+    else
+    	echo "/devops/dev dir is not exists creating new one and then copy all the files"
+    	sudo mkdir /devops/dev
+        sudo mv * /devops/dev
+    fi
+else
+echo " /devops dir is not exists creating new and other dirs too"
+sudo mkdir /devops
+echo " /devops created"
+sudo mkdir /devops/dev
+echo "/devops/dev created"
+sudo mkdir /devops/prod
+echo "/devops/env created"
+fi
+
+echo "launching the docker container of dev enviroment"
+if sudo docker ps -a | grep dev_env
+then
+	echo "container already running"
+else
+	echo "launching dev env container"
+    sudo docker run -dit --name dev_env -p 8081:80 -v /devops/dev:/var/www/html --rm vimal13/apache-webserver-php
+fi
