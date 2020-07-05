@@ -1,0 +1,8 @@
+sudo mv * /devops/prod/
+if sudo docker ps -a | grep prod_env
+then 
+	echo "container already running"
+else
+	echo "launching the preod container"
+    sudo docker run -dit --name prod_env -p 8082:80 -v /devops/prod:/var/www/html --rm vimal13/apache-webserver-php
+fi
